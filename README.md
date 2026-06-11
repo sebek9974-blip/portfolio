@@ -26,12 +26,16 @@ Prosta strona internetowa portfolio dla inżyniera instalacji sanitarnych. Pliki
 - Dodaj kolejne projekty lub zdjęcia w sekcji `Wybrane projekty`.
 - Możesz rozszerzyć stronę o kolejne sekcje, np. doświadczenie, certyfikaty lub referencje.
 
-## Dodawanie plików PDF z projektami
+## Dodawanie obrazów do galerii
 
 1. Utwórz folder `projects` obok `index.html`, np. `projects/`.
-2. Skopiuj swoje pliki PDF do tego folderu, np. `projects/projekt1.pdf`, `projects/projekt2.pdf`.
-3. Otwórz `index.html` i w sekcji "Projekty (PDF)" zaktualizuj atrybuty `data-pdf` lub dodaj nowe elementy `.pdf-item` z odpowiednią ścieżką do pliku.
-4. Po odświeżeniu strony kliknięcie miniaturki otworzy podgląd PDF w modalu. Jeśli osadzanie PDF nie działa w przeglądarce, użyj linku, który otwiera plik w nowej karcie.
+2. Skopiuj swoje obrazy (JPG, PNG) do tego folderu, np. `projects/projekt1.jpg`, `projects/projekt2.jpg`.
+3. Otwórz `index.html` w edytorze i w sekcji "Galeria Projektów" zaktualizuj atrybuty `data-img` i `src` w elementach `.gallery-item`:
+   ```html
+   <div class="gallery-item" data-img="projects/projekt1.jpg">
+     <img class="gallery-thumb" src="projects/projekt1.jpg" alt="Projekt 1" onerror="this.parentElement.style.display='none'">
+   ```
+4. Po odświeżeniu strony kliknięcie miniatury otworzy powiększony podgląd obrazu w modalu.
 
 Przykład struktury:
 ```
@@ -40,8 +44,14 @@ seba/
   ├─ style.css
   ├─ README.md
   └─ projects/
-      ├─ projekt1.pdf
-      └─ projekt2.pdf
+      ├─ projekt1.jpg
+      ├─ projekt2.jpg
+      └─ projekt3.jpg
 ```
 
-Po umieszczeniu plików zatwierdź zmiany i wypchnij je na GitHub, a następnie opublikuj repozytorium na GitHub Pages jak opisano wyżej.
+Po wgraniu obrazów zatwierdź zmiany i wypchnij na GitHub:
+```bash
+git add .
+git commit -m "Dodanie galerii obrazów"
+git push
+```

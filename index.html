@@ -16,8 +16,7 @@
         <ul class="nav-links">
           <li><a href="#o-mnie">O mnie</a></li>
           <li><a href="#umiejetnosci">Umiejętności</a></li>
-          <li><a href="#projekty">Projekty</a></li>
-          <li><a href="#projekty-pdf">Projekty (PDF)</a></li>
+          <li><a href="#galeria">Galeria</a></li>
           <li><a href="#kontakt">Kontakt</a></li>
         </ul>
       </div>
@@ -82,27 +81,27 @@
       </article>
     </section>
 
-    <section id="projekty-pdf">
-      <h2>Projekty (PDF)</h2>
-      <p>Umieść pliki PDF w folderze <strong>projects/</strong> w tym katalogu (np. <em>projects/projekt1.pdf</em>), a następnie odśwież stronę. Kliknij miniaturę, aby otworzyć podgląd.</p>
-      <div class="pdf-grid">
-        <div class="pdf-item" data-pdf="projects/projekt1.pdf">
-          <div class="pdf-thumb">PDF 1</div>
-          <div class="pdf-meta">
+    <section id="galeria">
+      <h2>Galeria Projektów</h2>
+      <p>Umieść pliki JPG/PNG w folderze <strong>projects/</strong> (np. <em>projects/projekt1.jpg</em>). Kliknij miniatury, aby powiększyć.</p>
+      <div class="gallery-grid">
+        <div class="gallery-item" data-img="projects/projekt1.jpg">
+          <img class="gallery-thumb" src="projects/projekt1.jpg" alt="Projekt 1" onerror="this.parentElement.style.display='none'">
+          <div class="gallery-meta">
             <strong>Projekt 1</strong>
             <span>Modernizacja instalacji</span>
           </div>
         </div>
-        <div class="pdf-item" data-pdf="projects/projekt2.pdf">
-          <div class="pdf-thumb">PDF 2</div>
-          <div class="pdf-meta">
+        <div class="gallery-item" data-img="projects/projekt2.jpg">
+          <img class="gallery-thumb" src="projects/projekt2.jpg" alt="Projekt 2" onerror="this.parentElement.style.display='none'">
+          <div class="gallery-meta">
             <strong>Projekt 2</strong>
             <span>Nowa inwestycja</span>
           </div>
         </div>
-        <div class="pdf-item" data-pdf="projects/projekt3.pdf">
-          <div class="pdf-thumb">PDF 3</div>
-          <div class="pdf-meta">
+        <div class="gallery-item" data-img="projects/projekt3.jpg">
+          <img class="gallery-thumb" src="projects/projekt3.jpg" alt="Projekt 3" onerror="this.parentElement.style.display='none'">
+          <div class="gallery-meta">
             <strong>Projekt 3</strong>
             <span>Przebudowa systemu kanalizacji</span>
           </div>
@@ -118,11 +117,11 @@
     </section>
   </main>
 
-  <div id="pdfModal" class="modal" aria-hidden="true">
+  <div id="imageModal" class="modal" aria-hidden="true">
     <div class="modal-content">
       <button class="modal-close" aria-label="Zamknij">✕</button>
-      <div class="pdf-wrap">
-        <object id="pdfViewer" type="application/pdf" data="" width="100%" height="600">Twoja przeglądarka nie obsługuje osadzania PDF. <a id="pdfLink" href="" target="_blank">Otwórz PDF w nowej karcie</a>.</object>
+      <div class="image-wrap">
+        <img id="imageViewer" src="" alt="Podgląd projektu">
       </div>
     </div>
     <div class="modal-backdrop"></div>
@@ -135,37 +134,43 @@
   </footer>
 
   <script>
-    // Prosty modal do podglądu PDF-ów
-    const pdfItems = document.querySelectorAll('.pdf-item');
-    const modal = document.getElementById('pdfModal');
-    const pdfViewer = document.getElementById('pdfViewer');
-    const pdfLink = document.getElementById('pdfLink');
+    // Galeria obrazów
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const modal = document.getElementById('imageModal');
+    const imageViewer = document.getElementById('imageViewer');
     const closeBtn = document.querySelector('.modal-close');
     const backdrop = document.querySelector('.modal-backdrop');
 
-    function openPdf(src) {
-      pdfViewer.setAttribute('data', src);
-      pdfLink.setAttribute('href', src);
+    function openImage(src) {
+      imageViewer.setAttribute('src', src);
       modal.setAttribute('aria-hidden', 'false');
       modal.classList.add('open');
     }
-    function closePdf() {
+    function closeImage() {
       modal.setAttribute('aria-hidden', 'true');
       modal.classList.remove('open');
-      pdfViewer.setAttribute('data', '');
-      pdfLink.setAttribute('href', '');
+      imageViewer.setAttribute('src', '');
     }
 
-    pdfItems.forEach(item => {
+    galleryItems.forEach(item => {
       item.addEventListener('click', () => {
-        const src = item.getAttribute('data-pdf');
-        openPdf(src);
+        const src = item.getAttribute('data-img');
+        openImage(src);
       });
     });
 
-    closeBtn.addEventListener('click', closePdf);
-    backdrop.addEventListener('click', closePdf);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePdf(); });
+    closeBtn.addEventListener('click', closeImage);
+    backdrop.addEventListener('click', closeImage);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeImage(); });
+
+    // Smooth scroll for nav links
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
   </script>
 </body>
 </html>
