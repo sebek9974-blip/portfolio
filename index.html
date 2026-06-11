@@ -83,21 +83,14 @@
 
     <section id="projekty">
       <h2>Projekty</h2>
-      <p>Kliknij na miniaturę, aby otworzyć pełny plik projektu.</p>
-      <div class="gallery-grid">
-        <div class="gallery-item" data-pdf="projects/projekt1A.pdf">
-          <div class="gallery-thumb">Projekt 1A</div>
-          <div class="gallery-meta">
-            <strong>Projekt 1A</strong>
-            <span>Dokumentacja techniczna</span>
-          </div>
+      <div class="projects-gallery">
+        <div class="project-photo" data-img="projects/projekt1.png">
+          <img src="projects/projekt1.png" alt="Projekt 1" onerror="this.parentElement.style.display='none'">
+          <div class="photo-overlay">Kliknij aby powiększyć</div>
         </div>
-        <div class="gallery-item" data-pdf="projects/projekt2.pdf">
-          <div class="gallery-thumb">Projekt 2</div>
-          <div class="gallery-meta">
-            <strong>Projekt 2</strong>
-            <span>Dokumentacja techniczna</span>
-          </div>
+        <div class="project-photo" data-img="projects/projekt2.png">
+          <img src="projects/projekt2.png" alt="Projekt 2" onerror="this.parentElement.style.display='none'">
+          <div class="photo-overlay">Kliknij aby powiększyć</div>
         </div>
       </div>
     </section>
@@ -110,51 +103,52 @@
     </section>
   </main>
 
-  <div id="pdfModal" class="modal" aria-hidden="true">
-    <div class="modal-content">
-      <button class="modal-close" aria-label="Zamknij">✕</button>
-      <div class="image-wrap">
-        <object id="pdfViewer" type="application/pdf" data="" width="100%" height="600"></object>
-      </div>
-    </div>
-    <div class="modal-backdrop"></div>
-  </div>
-
   <footer>
     <div class="container">
       <p>© 2026 Sebastian Leszczyński - Inżynier instalacji sanitarnych</p>
     </div>
   </footer>
 
+  <div id="lightbox" class="lightbox" aria-hidden="true">
+    <div class="lightbox-content">
+      <button class="lightbox-close" aria-label="Zamknij">✕</button>
+      <img id="lightbox-img" src="" alt="Projekt">
+    </div>
+    <div class="lightbox-backdrop"></div>
+  </div>
+
   <script>
-    // Modal do podglądu PDFów
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const modal = document.getElementById('pdfModal');
-    const pdfViewer = document.getElementById('pdfViewer');
-    const closeBtn = document.querySelector('.modal-close');
-    const backdrop = document.querySelector('.modal-backdrop');
+    // Lightbox dla zdjęć projektów
+    const projectPhotos = document.querySelectorAll('.project-photo');
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.lightbox-close');
+    const backdrop = document.querySelector('.lightbox-backdrop');
 
-    function openPdf(src) {
-      pdfViewer.setAttribute('data', src);
-      modal.setAttribute('aria-hidden', 'false');
-      modal.classList.add('open');
-    }
-    function closePdf() {
-      modal.setAttribute('aria-hidden', 'true');
-      modal.classList.remove('open');
-      pdfViewer.setAttribute('data', '');
+    function openLightbox(src) {
+      lightboxImg.setAttribute('src', src);
+      lightbox.setAttribute('aria-hidden', 'false');
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
     }
 
-    galleryItems.forEach(item => {
-      item.addEventListener('click', () => {
-        const src = item.getAttribute('data-pdf');
-        openPdf(src);
+    function closeLightbox() {
+      lightbox.setAttribute('aria-hidden', 'true');
+      lightbox.classList.remove('open');
+      lightboxImg.setAttribute('src', '');
+      document.body.style.overflow = 'auto';
+    }
+
+    projectPhotos.forEach(photo => {
+      photo.addEventListener('click', () => {
+        const src = photo.getAttribute('data-img');
+        openLightbox(src);
       });
     });
 
-    closeBtn.addEventListener('click', closePdf);
-    backdrop.addEventListener('click', closePdf);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePdf(); });
+    closeBtn.addEventListener('click', closeLightbox);
+    backdrop.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeLightbox(); });
 
     // Smooth scroll for nav links
     document.querySelectorAll('.nav-links a').forEach(a => {
